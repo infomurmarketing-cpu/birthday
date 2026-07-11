@@ -10,7 +10,11 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Desktop cursor active but hidden on touch devices */
+        html, body { cursor: none; }
+        
         :root {
             --birthday-pink: #fff0f3; /* Soft Creamy Pink Base */
             --accent-rose: #ff85a2;
@@ -93,8 +97,8 @@
 
         /* Dashboard Controller for Music */
         .music-dashboard {
-            position: fixed; top: 30px; right: 30px; z-index: 999; display: flex; align-items: center; gap: 15px;
-            background: rgba(255, 255, 255, 0.85); border: 1px solid var(--border-line); padding: 10px 18px;
+            position: fixed; top: 20px; right: 20px; z-index: 999; display: flex; align-items: center; gap: 15px;
+            background: rgba(255, 255, 255, 0.85); border: 1px solid var(--border-line); padding: 8px 14px;
             border-radius: 30px; backdrop-filter: blur(8px); box-shadow: 0 8px 20px rgba(0,0,0,0.05);
         }
         .visualizer-waves { display: flex; align-items: flex-end; gap: 3px; height: 18px; width: 28px; }
@@ -107,15 +111,15 @@
         .control-btn-icon { background: transparent; border: none; fill: var(--accent-rose); width: 16px; height: 16px; display: flex; }
 
         /* 2. Main Presentational Hero */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero { min-height: 100vh; padding: 40px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .hero h1 { font-family: 'Pinyon Script', cursive; font-size: 7.5rem; color: var(--accent-rose); line-height: 0.8; margin-bottom: 25px; text-shadow: 2px 2px 0px rgba(255,255,255,0.8); }
         .hero h2 { font-family: 'Cinzel', serif; font-size: 2.8rem; font-weight: 600; letter-spacing: 6px; color: var(--text-dark); }
         
         /* Countdown Display Box */
-        .countdown-container { margin-top: 50px; display: flex; gap: 25px; justify-content: center; min-height: 130px; transition: all 0.5s ease; }
+        .countdown-container { margin-top: 50px; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; min-height: 130px; transition: all 0.5s ease; width: 100%; max-width: 600px; }
         .time-box {
             background: var(--glass-card); border: 1px solid var(--border-line);
-            padding: 20px 28px; border-radius: 18px; min-width: 105px;
+            padding: 20px 24px; border-radius: 18px; min-width: 95px; flex: 1;
             backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(255,133,162,0.06); transition: 0.3s;
         }
         .time-box:hover { border-color: var(--accent-rose); transform: translateY(-3px); }
@@ -130,32 +134,32 @@
         .candle { position: absolute; width: 8px; height: 32px; background: #60a5fa; top: -32px; left: 50%; transform: translateX(-50%); border-radius: 2px; }
         .flame { position: absolute; width: 12px; height: 20px; background: #f59e0b; border-radius: 50% 50% 20% 20%; top: -22px; left: 50%; transform: translateX(-50%); animation: flicker 0.1s ease-in infinite alternate; box-shadow: 0 0 12px #f59e0b; }
         @keyframes flicker { 0% { transform: translateX(-50%) scale(1); } 100% { transform: translateX(-50%) scale(1.1) rotate(2deg); } }
-        .cake-text { font-family: 'Cinzel', serif; color: var(--text-dark); font-size: 1.3rem; margin-top: 25px; letter-spacing: 2px; font-weight: 600; }
+        .cake-text { font-family: 'Cinzel', serif; color: var(--text-dark); font-size: 1.3rem; margin-top: 25px; letter-spacing: 2px; font-weight: 600; text-align: center; }
 
         /* 3. Photographic Display Showcase */
         .gallery-sec { padding: 80px 20px 40px; max-width: 1200px; margin: auto; text-align: center; }
         .gallery-sec h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; color: var(--text-dark); letter-spacing: 4px; margin-bottom: 20px; }
         .gallery-sec p.section-desc { font-size: 1rem; color: #756265; font-style: italic; margin-bottom: 50px; letter-spacing: 1px; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-bottom: 40px; justify-content: center; }
         
-        /* Flex alignment for sections with 2 images to look clean */
-        .grid-two-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; }
-        .grid-two-items .polaroid { flex: 1; max-width: 360px; min-width: 300px; }
+        /* Responsive Grid System */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 40px; justify-content: center; }
+        .grid-two-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; justify-content: center; max-width: 800px; margin: 0 auto; }
 
         /* Polaroid Styling */
         .polaroid {
-            background: #ffffff; padding: 16px 16px 35px 16px; border-radius: 8px;
+            background: #ffffff; padding: 16px 16px 30px 16px; border-radius: 8px;
             box-shadow: 0 15px 35px rgba(45,19,24,0.08); transform: translateY(0); transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            width: 100%; max-width: 360px; margin: 0 auto;
         }
         .polaroid:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 25px 50px rgba(255,133,162,0.25); }
-        .polaroid img { width: 100%; height: 410px; object-fit: cover; border-radius: 4px; background-color: #f3f4f6; }
+        .polaroid img { width: 100%; height: 380px; object-fit: cover; border-radius: 4px; background-color: #f3f4f6; }
         .polaroid p { color: var(--text-dark); font-family: 'Pinyon Script', cursive; font-size: 2.6rem; margin-top: 18px; font-weight: 500; line-height: 1.2; }
 
         /* ── 4. MODERNIZED TEXT DISPLAY CARD WITH COMBINED PROFILE IMAGE ── */
-        .letter-sec { padding: 60px 20px 170px; display: flex; justify-content: center; }
+        .letter-sec { padding: 60px 20px 120px; display: flex; justify-content: center; }
         .letter-card {
             max-width: 920px; width: 100%; background: var(--glass-card); border: 1px solid var(--border-line);
-            padding: 60px 45px; border-radius: 24px; backdrop-filter: blur(15px);
+            padding: 50px 40px; border-radius: 24px; backdrop-filter: blur(15px);
             box-shadow: 0 20px 50px rgba(45,19,24,0.05);
             display: flex; flex-direction: row; align-items: center; gap: 45px; text-align: left;
         }
@@ -172,15 +176,35 @@
         .sender-profile-frame:hover { transform: rotate(0deg) scale(1.03); }
         .sender-profile-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; background-color: #f3f4f6; }
 
-        /* Responsive Break for Profile Side Alignments */
-        @media (max-width: 768px) {
-            .letter-card { flex-direction: column-reverse; text-align: center; padding: 50px 30px; }
-            .sender-profile-frame { width: 240px; height: 310px; transform: rotate(0deg); }
-        }
-
         /* Control Reveal States */
         .reveal { opacity: 0; transform: translateY(35px); transition: all 1.2s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ── RESPONSIVE MEDIA QUERIES FOR MOBILE BREAKPOINTS ── */
+        @media (max-width: 768px) {
+            html, body { cursor: auto; } /* Default cursor for mobile */
+            #custom-cursor, #custom-cursor-glow { display: none !important; } /* Hide tracking icons */
+            
+            .hero h1 { font-size: 4.8rem; line-height: 0.9; }
+            .hero h2 { font-size: 1.8rem; letter-spacing: 3px; }
+            
+            .countdown-container { gap: 10px; }
+            .time-box { padding: 12px 10px; min-width: 70px; border-radius: 12px; }
+            .time-box span { font-size: 1.5rem; }
+            .time-box label { font-size: 0.6rem; letter-spacing: 1px; }
+
+            .gallery-sec { padding: 50px 15px 20px; }
+            .gallery-sec h2 { font-size: 1.7rem; letter-spacing: 2px; }
+            .gallery-sec p.section-desc { margin-bottom: 30px; font-size: 0.9rem; }
+            
+            .polaroid { padding: 12px 12px 22px 12px; max-width: 310px; }
+            .polaroid img { height: 320px; }
+            .polaroid p { font-size: 2.2rem; margin-top: 12px; }
+
+            .letter-card { flex-direction: column-reverse; text-align: center; padding: 40px 20px; gap: 30px; }
+            .letter-card p { font-size: 1rem; line-height: 1.8; margin-bottom: 20px; }
+            .sender-profile-frame { width: 220px; height: 280px; transform: rotate(0deg); margin: 0 auto; }
+        }
     </style>
 </head>
 <body>
@@ -313,17 +337,19 @@
         const cursor = document.getElementById('custom-cursor');
         const cursorGlow = document.getElementById('custom-cursor-glow');
 
-        // Mouse Motion Tracking System
+        // Mouse Motion Tracking System (Will safely execute without desktop errors on mobile)
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
-            cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px';
+            if (window.innerWidth > 768) {
+                cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+                cursorGlow.style.left = e.clientX + 'px'; cursorGlow.style.top = e.clientY + 'px';
+            }
         });
 
         // Generate Ambient Floating Particle Sparkles Nodes
         const space = document.getElementById('sparkle-space');
-        for (let i = 0; i < 35; i++) {
+        for (let i = 0; i < 20; i++) { // Optimized particle count for stable mobile rendering
             let s = document.createElement('div'); s.className = 'sparkle';
-            s.style.width = s.style.height = (Math.random() * 5 + 3) + 'px';
+            s.style.width = s.style.height = (Math.random() * 4 + 3) + 'px';
             s.style.left = Math.random() * 100 + 'vw';
             s.style.animationDelay = Math.random() * 9 + 's';
             space.appendChild(s);
@@ -366,15 +392,15 @@
 
         // Photo Grid Explosion Triggers
         function triggerBlast() {
-            confetti({ particleCount: 55, spread: 65, origin: { y: 0.65 }, colors: ['#ff85a2', '#ffdf7e', '#ffffff'] });
+            confetti({ particleCount: 35, spread: 55, origin: { y: 0.75 }, colors: ['#ff85a2', '#ffdf7e', '#ffffff'] });
         }
 
         // Confetti Engine
         function blastLuxuryConfetti() {
-            var duration = 4000; var end = Date.now() + duration;
+            var duration = 3000; var end = Date.now() + duration;
             (function framework() {
-                confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff85a2', '#ffdf7e', '#ffffff'] });
-                confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff85a2', '#ffdf7e', '#ffffff'] });
+                confetti({ particleCount: 3, angle: 60, spread: 45, origin: { x: 0 }, colors: ['#ff85a2', '#ffdf7e', '#ffffff'] });
+                confetti({ particleCount: 3, angle: 120, spread: 45, origin: { x: 1 }, colors: ['#ff85a2', '#ffdf7e', '#ffffff'] });
                 if (Date.now() < end) requestAnimationFrame(framework);
             }());
         }
@@ -384,12 +410,12 @@
             const flame = document.getElementById('cake-flame');
             if (flame) {
                 flame.style.display = 'none';
-                confetti({ particleCount: 160, spread: 85, origin: { y: 0.52 }, colors: ['#ff85a2', '#ffdf7e', '#ffffff'] });
+                confetti({ particleCount: 120, spread: 75, origin: { y: 0.60 }, colors: ['#ff85a2', '#ffdf7e', '#ffffff'] });
                 document.getElementById('cake-status-text').innerText = "Make a wish, Haleema! 🎂";
             }
         }
 
-        // Real Countdown Engine Target: 12 July
+        // Real Countdown Engine Target: 12 July 2026
         const objectiveDate = new Date("July 12, 2026 00:00:00").getTime();
         let cakeLoaded = false;
 
@@ -439,7 +465,7 @@
             var items = document.querySelectorAll(".reveal");
             for (var i = 0; i < items.length; i++) {
                 var boundary = items[i].getBoundingClientRect().top;
-                if (boundary < window.innerHeight - 60) { items[i].classList.add("active"); }
+                if (boundary < window.innerHeight - 40) { items[i].classList.add("active"); }
             }
         }
         window.addEventListener("scroll", triggerRevealScroll);
