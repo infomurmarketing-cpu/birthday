@@ -84,7 +84,7 @@
       100% { transform: translateY(120vh) rotate(360deg) translateX(-20px) opacity: 0; }
     }
 
-    /* Fixed Music Control */
+    /* Music Control */
     .music-btn {
       position: fixed;
       top: 15px;
@@ -107,7 +107,7 @@
       border: 1px solid rgba(255, 182, 193, 0.25);
       border-radius: 20px;
       padding: 25px 18px;
-      max-width: 520px;
+      max-width: 500px;
       width: 100%;
       text-align: center;
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
@@ -274,50 +274,107 @@
       font-size: 0.9rem;
     }
 
-    /* REDESIGNED PHOTO GALLERY SECTION */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 15px;
-      max-height: 60vh;
-      overflow-y: auto;
-      padding: 5px;
-    }
-    /* Smooth Scrollbar Styling */
-    .gallery-grid::-webkit-scrollbar {
-      width: 4px;
-    }
-    .gallery-grid::-webkit-scrollbar-thumb {
-      background: rgba(255, 117, 140, 0.5);
-      border-radius: 10px;
+    /* SLIDER & 3 COMBINED FRAMES STYLING */
+    .slider-container {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      margin: 15px auto 0;
     }
 
-    .photo-card {
+    .slide {
+      display: none;
+      animation: zoomFade 0.8s ease-in-out forwards;
+    }
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes zoomFade {
+      from { opacity: 0; transform: scale(0.94); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Dual Side-by-Side Frames Layout */
+    .combined-frame {
+      display: flex;
+      gap: 10px;
       width: 100%;
-      aspect-ratio: 4 / 5; /* Full Portrait Display without Crop */
+      height: 260px;
+    }
+    .combined-frame .sub-photo {
+      flex: 1;
+      height: 100%;
       border-radius: 14px;
       overflow: hidden;
       border: 2px solid rgba(255, 182, 193, 0.4);
-      background: rgba(0, 0, 0, 0.4);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease, border-color 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      background: #000;
     }
-    .photo-card:hover {
-      transform: translateY(-3px) scale(1.02);
-      border-color: #ff7eb3;
-    }
-    .photo-card img {
+    .combined-frame .sub-photo img {
       width: 100%;
       height: 100%;
-      object-fit: contain; /* Prevents picture cropping */
-      background: #000;
+      object-fit: contain;
+    }
+
+    .photo-heading {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: #ffd1dc;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      font-style: italic;
+    }
+
+    .slider-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 182, 193, 0.4);
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+    .nav-btn:hover {
+      background: #ff7eb3;
+    }
+
+    .dots-container {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .dot.active {
+      background: #ff7eb3;
+      width: 18px;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Single Music Player -->
+  <!-- Single Music Audio Player -->
   <button class="music-btn" onclick="toggleMusic()">🎵 <span id="musicText">Play Music</span></button>
   <audio id="bgMusic" loop>
     <source src="music.mpeg" type="audio/mpeg">
@@ -325,7 +382,7 @@
 
   <div class="card">
     
-    <!-- PAGE 0: COUNTDOWN PAGE -->
+    <!-- PAGE 0: MIDNIGHT COUNTDOWN PAGE -->
     <div class="page active" id="page0">
       <span class="tagline">Counting Down To Midnight</span>
       <h1>Happy Anniversary</h1>
@@ -379,16 +436,51 @@
       <button class="btn" onclick="goToPage(3)">View Our Memories 📸</button>
     </div>
 
-    <!-- PAGE 3: REDESIGNED COUPLE MOMENTS GALLERY -->
+    <!-- PAGE 3: 3 COMBINED FRAMES (WITH 6 PICS IN TOTAL) -->
     <div class="page" id="page3">
       <span class="tagline">Our Journey</span>
       <h1>Couple Moments</h1>
-      
-      <div class="gallery-grid">
-        <div class="photo-card"><img src="photo 1.jpeg" alt="Couple Moment 1"></div>
-        <div class="photo-card"><img src="photo 4.jpeg" alt="Couple Moment 2"></div>
-        <div class="photo-card"><img src="photo 3.jpeg" alt="Couple Moment 3"></div>
-        <div class="photo-card"><img src="photo 2.jpeg" alt="Couple Moment 4"></div>
+
+      <div class="slider-container">
+        <!-- Frame 1: Photo 1 & Photo 2 -->
+        <div class="slide active">
+          <div class="combined-frame">
+            <div class="sub-photo"><img src="photo 1.jpeg" alt="Moment 1"></div>
+            <div class="sub-photo"><img src="photo 2.jpeg" alt="Moment 2"></div>
+          </div>
+          <div class="photo-heading">"Every love story is beautiful, but ours is my favorite." ✨</div>
+        </div>
+
+        <!-- Frame 2: Photo 3 & Photo 4 -->
+        <div class="slide">
+          <div class="combined-frame">
+            <div class="sub-photo"><img src="photo 3.jpeg" alt="Moment 3"></div>
+            <div class="sub-photo"><img src="photo 4.jpeg" alt="Moment 4"></div>
+          </div>
+          <div class="photo-heading">"Together is my favorite place to be." 💖</div>
+        </div>
+
+        <!-- Frame 3: Photo 5 & Photo 6 -->
+        <div class="slide">
+          <div class="combined-frame">
+            <div class="sub-photo"><img src="photo 5.jpeg" alt="Moment 5"></div>
+            <div class="sub-photo"><img src="photo 6.jpeg" alt="Moment 6"></div>
+          </div>
+          <div class="photo-heading">"Two hearts, one soul, endless memories." 💞</div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="slider-nav">
+          <button class="nav-btn" onclick="changeSlide(-1)">❮</button>
+          
+          <div class="dots-container">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+          </div>
+
+          <button class="nav-btn" onclick="changeSlide(1)">❯</button>
+        </div>
       </div>
 
       <button class="btn" onclick="resetCelebration()">Replay Celebration 🔄</button>
@@ -397,6 +489,7 @@
   </div>
 
   <script>
+    // Music Player Logic
     const audio = document.getElementById('bgMusic');
 
     function toggleMusic() {
@@ -410,6 +503,7 @@
       }
     }
 
+    // Password Unlock
     function unlockWithPassword() {
       const password = prompt("Enter Password to unlock early (Hint: 1234):");
       if (password === "1234") {
@@ -419,6 +513,7 @@
       }
     }
 
+    // Countdown Timer
     function updateCountdown() {
       const now = new Date();
       const midnight = new Date();
@@ -442,6 +537,7 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
+    // Party Animations
     let balloonTimer = null;
     let petalTimer = null;
 
@@ -482,6 +578,7 @@
       goToPage(1);
     }
 
+    // Cake Cut Logic
     let cakeState = 0;
 
     function handleCakeInteraction() {
@@ -517,6 +614,11 @@
       } else {
         document.getElementById('page' + pageVal).classList.add('active');
       }
+      if (pageVal === 3) {
+        startAutoSlider();
+      } else {
+        stopAutoSlider();
+      }
     }
 
     function resetCelebration() {
@@ -527,6 +629,52 @@
       document.getElementById('instructionText').innerText = "Blow The Candle First 🕯️";
       document.getElementById('subInstruction').innerText = "Tap the flame to blow out the candle!";
       goToPage(1);
+    }
+
+    // Auto-Play Slide Carousel
+    let slideIndex = 0;
+    let autoSlideInterval = null;
+    const slides = document.getElementsByClassName("slide");
+    const dots = document.getElementsByClassName("dot");
+
+    function showSlides(n) {
+      if (n >= slides.length) { slideIndex = 0; }
+      if (n < 0) { slideIndex = slides.length - 1; }
+
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].classList.remove("active");
+        dots[i].classList.remove("active");
+      }
+
+      slides[slideIndex].classList.add("active");
+      dots[slideIndex].classList.add("active");
+    }
+
+    function changeSlide(n) {
+      showSlides(slideIndex += n);
+      resetAutoSlider();
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+      resetAutoSlider();
+    }
+
+    function startAutoSlider() {
+      stopAutoSlider();
+      autoSlideInterval = setInterval(() => {
+        slideIndex++;
+        showSlides(slideIndex);
+      }, 3500); // Frame changes automatically every 3.5 seconds
+    }
+
+    function stopAutoSlider() {
+      if (autoSlideInterval) clearInterval(autoSlideInterval);
+    }
+
+    function resetAutoSlider() {
+      stopAutoSlider();
+      startAutoSlider();
     }
 
     function createHeart() {
